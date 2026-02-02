@@ -1,3 +1,5 @@
+//enum per i livelli
+
 package persistence;
 
 //livello
