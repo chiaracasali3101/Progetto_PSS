@@ -30,7 +30,7 @@ public class ScoreManagerImpl implements ScoreManager {
 
     /** 
      * classifica dei primi X punteggi 
-     * @return una lista dei primi 10 punteggi ordinati in ordine crescente
+     * @return una lista dei primi 10 punteggi ordinati in ordine decrescente
      */
     @Override 
     public List <GameScore> getTopScores() {
