@@ -102,4 +102,20 @@ public class ScoreManagerTest {
 
         new java.io.File(testFile).delete();
     }
+
+    @Test 
+    void testSaveAndLoad() throws IOException {
+        String filename = "test_scores.csv";
+        manager.addScore(new GameScore("Player1", 100, 10, LocalDateTime.now(), GameLevel.EASY));
+
+        manager.saveToFile(filename); //salva
+        manager.loadFromFile(filename); //carica
+
+        assertEquals(1, manager.getTopScores().size(), "La lista dovrebbe contenere un elemento dopo il caricamento");
+        assertEquals("Player1", manager.getTopScores().get(0).getPlayerName());
+
+        //pulizia file test
+        new java.io.File(filename).delete();
+    }
 }
+
