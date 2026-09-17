@@ -1,0 +1,13 @@
+# Cartelle di compilazione
+bin/
+build/
+target/
+out/
+
+# Configurazione VS Code e OS
+.vscode/
+.DS_Store
+*.class
+.project
+.classpath
+.settings/
