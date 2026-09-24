@@ -74,4 +74,10 @@ public class ScoreManagerTest {
         assertEquals("Charlie", topScores2048.get(0).getPlayerName());
         assertEquals("Alice", topScores2048.get(1).getPlayerName());
     }
+
+    @Test
+    public void testLoadScoresWhenFileDoesNotExist() throws IOException {
+        final List<GameRecord> scores = scoreManager.loadAllScores();
+        assertTrue(scores.isEmpty(), "La lista deve essere vuota se il file non esiste");
+    }
 }
