@@ -93,22 +93,20 @@ public class FileScoreManager implements ScoreManager {
 
     @Override 
     public List<GameRecord> getTopScores(final GameType gameType, final int limit) {
-        //implementazione per ottenere i migliori punteggi filtrando per tipo di gioco e limitando il numero di record
-        Objects.requireNonNull(gameType, "GameType cannot be null"); //no valori nulli
+        Objects.requireNonNull(gameType, "GameType cannot be null");
 
         if (limit <= 0) {
             throw new IllegalArgumentException("Limit must be positive");
         }
 
-        try{
+        try {
             return loadAllScores().stream()
-                .filter(record -> record.getGameType().equals(gameType)) //filtra per tipo di gioco
-                .sorted(Comparator.comparingInt(GameRecord::getScore).reversed()) //ordina per punteggio decrescente
-                .limit(limit) //limita il numero di record
+                .filter(record -> record.getGameType().equals(gameType.name())) // <-- USA .name() QUI
+                .sorted(Comparator.comparingInt(GameRecord::getScore).reversed())
+                .limit(limit)
                 .collect(Collectors.toList());
-        }
-        catch (IOException e) {
-            return List.of(); //ritorna lista vuota in caso di errore
+        } catch (IOException e) {
+            return List.of();
         }
     }
 }
