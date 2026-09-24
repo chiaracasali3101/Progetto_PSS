@@ -40,7 +40,7 @@ public class FileScoreManager implements ScoreManager {
             //logica per salvare il record nel file
             final String playerName = record.getPlayerName();
             final int score = record.getScore();
-            final GameType gameType = record.getGameType();
+            final String gameType = record.getGameType();
             final int moves = record.getMoves();
             final long durationSeconds = record.getDurationSeconds();
             final LocalDateTime timestamp = record.getTimestamp();
@@ -72,12 +72,23 @@ public class FileScoreManager implements ScoreManager {
 
         for (final String line : lines) {
             if (line.isBlank()) {
-                continue; //salta le righe vuote
+                continue;
             }
     
-            final String[] tokens = line.split(","); //array di stringhe dove ogni elemento è un campo del record
+            final String[] tokens = line.split(",");
+            if (tokens.length >= 6) {
+                final String playerName = tokens[0].trim();
+                final String gameType = tokens[1].trim();
+                final int score = Integer.parseInt(tokens[2].trim());
+                final int moves = Integer.parseInt(tokens[3].trim());
+                // tokens[4] è durationSeconds, che GameRecord attualmente imposta a 0
+                final LocalDateTime timestamp = LocalDateTime.parse(tokens[5].trim());
+
+                final GameRecord record = new GameRecord(playerName, score, gameType, moves, timestamp);
+                records.add(record);
+            }
         }
-        return List.copyOf(records);   
+        return List.copyOf(records);
     }
 
     @Override 

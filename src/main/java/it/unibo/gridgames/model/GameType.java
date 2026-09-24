@@ -1,5 +1,5 @@
 //GameType = elenco dei giochi 
-package main.java.it.unibo.gridgames.model;
+package it.unibo.gridgames.model;
 
 public enum GameType {
     GAME_2048("2048"),
