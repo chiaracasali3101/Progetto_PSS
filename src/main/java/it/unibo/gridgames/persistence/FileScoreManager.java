@@ -27,7 +27,7 @@ public class FileScoreManager implements ScoreManager {
     }
 
 
-    //implementazione dei tre metodi 
+    //implementazione dei metodi 
 
     @Override
     public void saveScore(final GameRecord record) throws IOException {
@@ -56,6 +56,7 @@ public class FileScoreManager implements ScoreManager {
         }
         }
     }
+
 
     @Override 
     public List<GameRecord> loadAllScores() throws IOException {
@@ -91,6 +92,7 @@ public class FileScoreManager implements ScoreManager {
         return List.copyOf(records);
     }
 
+
     @Override 
     public List<GameRecord> getTopScores(final GameType gameType, final int limit) {
         Objects.requireNonNull(gameType, "GameType cannot be null");
@@ -108,5 +110,41 @@ public class FileScoreManager implements ScoreManager {
         } catch (IOException e) {
             return List.of();
         }
+    }
+
+
+    @Override 
+    public int getNumberOfGamesPlayed(final GameType gameType) {
+        Objects.requireNonNull(gameType, "GameType cannot be null");
+
+        try {
+            return (int) loadAllScores().stream()
+                .filter(record -> record.getGameType().equals(gameType.name()))
+                .count();
+        } catch (IOException e) {
+            return 0;
+        }
+    }
+
+
+    @Override 
+    public double getAverageScore(final GameType gameType) {
+        Objects.requireNonNull(gameType, "GameType cannot be null");
+
+        try {
+            return loadAllScores().stream()
+                .filter(record -> record.getGameType().equals(gameType.name()))
+                .mapToInt(GameRecord::getScore)
+                .average()
+                .orElse(0.0);
+        } catch (IOException e) {
+            return 0.0;
+        }
+    }
+
+
+    @Override 
+    public GameRecord getHighestScore(final GameType gameType) {
+        Objects.requireNonNull(gameType, "GameType cannot be null");
     }
 }
