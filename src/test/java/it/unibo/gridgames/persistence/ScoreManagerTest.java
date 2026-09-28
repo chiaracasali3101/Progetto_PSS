@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import java.beans.Transient;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -79,5 +80,54 @@ public class ScoreManagerTest {
     public void testLoadScoresWhenFileDoesNotExist() throws IOException {
         final List<GameRecord> scores = scoreManager.loadAllScores();
         assertTrue(scores.isEmpty(), "La lista deve essere vuota se il file non esiste");
+    }
+
+
+
+    @Test
+    public void testGetNumberOfGamesPlayed() throws IOException {
+        LocalDateTime now = LocalDateTime.now().withNano(0);
+        GameRecord record1 = new GameRecord("Alice", 100, GameType.GAME_2048.name(), 10, now);
+        GameRecord record2 = new GameRecord("Bob", 200, GameType.SUDOKU.name(), 20, now);
+        GameRecord record3 = new GameRecord("Charlie", 300, GameType.PUZZLE_15.name(), 0, now);
+
+        scoreManager.saveScore(record1);
+        scoreManager.saveScore(record2);
+        scoreManager.saveScore(record3);
+
+        int numberOfGames2048 = scoreManager.getNumberOfGamesPlayed(GameType.GAME_2048);
+        int numberOfGamesSUDOKU = scoreManager.getNumberOfGamesPlayed(GameType.SUDOKU);
+        int numberOfGamesPUZZLE_15 = scoreManager.getNumberOfGamesPlayed(GameType.PUZZLE_15);
+    }
+
+    @Test
+    public void testGetAverageScore() throws IOException {
+        LocalDateTime now = LocalDateTime.now().withNano(0);
+        GameRecord record1 = new GameRecord("Alice", 100, GameType.GAME_2048.name(), 10, now);
+        GameRecord record2 = new GameRecord("Bob", 200, GameType.GAME_2048.name(), 20, now);
+        GameRecord record3 = new GameRecord("Charlie", 300, GameType.GAME_2048.name(), 30, now);
+
+        scoreManager.saveScore(record1);
+        scoreManager.saveScore(record2);
+        scoreManager.saveScore(record3);
+
+        double averageScore = scoreManager.getAverageScore(GameType.GAME_2048);
+        assertEquals(200.0, averageScore, "La media dei punteggi dovrebbe essere 200.0");
+    }
+
+    @Test
+    public void testGetHighestScore() throws IOException {
+        LocalDateTime now = LocalDateTime.now().withNano(0);
+        GameRecord record1 = new GameRecord("Alice", 100, GameType.GAME_2048.name(), 10, now);
+        GameRecord record2 = new GameRecord("Bob", 200, GameType.GAME_2048.name(), 20, now);    
+        GameRecord record3 = new GameRecord("Charlie", 300, GameType.GAME_2048.name(), 30, now);    
+
+        scoreManager.saveScore(record1);
+        scoreManager.saveScore(record2);
+        scoreManager.saveScore(record3);
+
+        GameRecord highestScoreRecord = scoreManager.getHighestScore(GameType.GAME_2048);
+        assertEquals("Charlie", highestScoreRecord.getPlayerName(), "Il giocatore con il punteggio più alto dovrebbe essere Charlie");
+        assertEquals(300, highestScoreRecord.getScore(), "Il punteggio più alto dovrebbe essere 300");  
     }
 }
