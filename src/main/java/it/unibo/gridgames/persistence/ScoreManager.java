@@ -16,4 +16,14 @@ public interface ScoreManager {
 
     //estrae la classifica filtrando il gioco e limitando il numero di record visualizzati
     List<GameRecord> getTopScores(GameType gameType, int limit);
+
+
+    //estrae il numero delle partite giocate di un gioco
+    int getNumberOfGamesPlayed(GameType gameType);
+    
+    //restituisce la media dei punteggi di un gioco specifico
+    double getAverageScore(GameType gameType);
+
+    //mostra il punteggio più alto di un gioco specifico
+    GameRecord getHighestScore(GameType gameType);
 }
