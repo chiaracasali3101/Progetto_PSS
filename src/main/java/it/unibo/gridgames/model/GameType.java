@@ -8,20 +8,24 @@ package it.unibo.gridgames.model;
 
 public enum GameType {
 
-    /**
-     * @param name the display name of the game type
-     */
-
     GAME_2048("2048"),
     SUDOKU("Sudoku"),
     PUZZLE_15("Gioco del 15");
 
     private final String name;
 
+    /**
+     * Constructs a GameType enum with a display name.
+     * @param name
+     */
     GameType(String name) {
         this.name = name;
     }
 
+    /**
+     * Returns the display name of the game type.
+     * @return
+     */
     public String getDisplayName() {
         return this.name;
     }
