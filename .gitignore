@@ -10,4 +10,4 @@ out/
 *.class
 .project
 .classpath
-.settings/
+.settings/.gradle/

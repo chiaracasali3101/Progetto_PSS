@@ -2,6 +2,7 @@ package it.unibo.gridgames.persistence;
 
 import java.nio.file.Path;
 import java.util.Objects;
+import java.util.Locale;
 
 import it.unibo.gridgames.model.GameRecord;
 import it.unibo.gridgames.model.GameType;
@@ -18,20 +19,33 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * 
+ * FileScoreManager is a class that implements the ScoreManager interface and provides functionality to save and load game scores from a file.
+ * It uses a file path to store the scores and provides methods to save a score, load all scores, get top scores, get the number of games played, get the average score, and
+ */
+
 public class FileScoreManager implements ScoreManager {
     private final Path filePath;
 
-    //riceve dall'esterno il percorso del file
-    public FileScoreManager(String filePath) {
+    /**
+     * Constructor for FileScoreManager that takes a file path as a parameter.
+     * @param filePath
+     */
+    public FileScoreManager(String filePath) {   //riceve dall'esterno il percorso del file
         this.filePath = Path.of(filePath);
     }
 
 
     //implementazione dei metodi 
 
+    /**
+     * Saves a game score to the file. The method is synchronized to ensure thread safety when multiple threads attempt to save scores simultaneously.
+     * @param record
+     * @throws IOException
+     */
     @Override
-    public void saveScore(final GameRecord record) throws IOException {
-        //implementazione per salvare il punteggio nel file
+    public void saveScore(final GameRecord record) throws IOException { //implementazione per salvare il punteggio nel file
         synchronized (this) {
 
             //controllo valori nulli 
@@ -40,7 +54,7 @@ public class FileScoreManager implements ScoreManager {
             //logica per salvare il record nel file
             final String playerName = record.getPlayerName();
             final int score = record.getScore();
-            final String gameType = record.getGameType();
+            final String gameType = record.getGameType().name();
             final int moves = record.getMoves();
             final long durationSeconds = record.getDurationSeconds();
             final LocalDateTime timestamp = record.getTimestamp();
@@ -60,7 +74,6 @@ public class FileScoreManager implements ScoreManager {
 
     @Override
     public List<GameRecord> loadAllScores() {
-        //se il file non esiste ritorna una lista vuota (primo accesso)
         if (!Files.exists(this.filePath)) {
             return List.of();
         }
@@ -77,19 +90,17 @@ public class FileScoreManager implements ScoreManager {
                 final String[] tokens = line.split(",");
                 if (tokens.length >= 6) {
                     final String playerName = tokens[0].trim();
-                    final String gameType = tokens[1].trim();
+                    final GameType gameType = GameType.valueOf(tokens[1].trim().toUpperCase(Locale.ROOT));
                     final int score = Integer.parseInt(tokens[2].trim());
                     final int moves = Integer.parseInt(tokens[3].trim());
-                    // tokens[4] è durationSeconds, che GameRecord attualmente imposta a 0
+                    final int durationSeconds = Integer.parseInt(tokens[4].trim());
                     final LocalDateTime timestamp = LocalDateTime.parse(tokens[5].trim());
-    
-                    final GameRecord record = new GameRecord(playerName, score, gameType, moves, timestamp);
+                    final GameRecord record = new GameRecord(playerName, score, gameType, moves, durationSeconds, timestamp);
                     records.add(record);
                 }
             }
             return List.copyOf(records);
         } catch (final IOException e) {
-            //se c'è un errore di I/O, restituisce una lista vuota 
             return List.of();
         }
     }
