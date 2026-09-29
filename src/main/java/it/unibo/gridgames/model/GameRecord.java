@@ -2,6 +2,11 @@ package it.unibo.gridgames.model;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * 
+ * Represents an immutable record of a completed game session, tracking player performance metrics, game type, and completion time.
+ */
+
 public class GameRecord {
     private final String playerName;
     private final int score;
@@ -9,6 +14,18 @@ public class GameRecord {
     private final int moves;
     private final long durationSeconds;
     private final java.time.LocalDateTime timestamp;
+
+    /**
+     * Constructs a new {@code GameRecord} instance.
+    * @param playerName the name of the player
+    * @param score the score achieved by the player
+    * @param gameType the type of the game played
+    * @param moves the number of moves made by the player
+    * @param durationSeconds the duration of the game in seconds
+    * @param timestamp the timestamp of when the game was played
+    * @throws IllegalArgumentException if playerName is null or blank, or if score, moves, or durationSeconds are negative
+    * @throws NullPointerException if gameType or timestamp is null
+     */
 
     //costruttore per il record di gioco
     public GameRecord( final String playerName, final int score, final GameType gameType, final int moves, final long durationSeconds, final LocalDateTime timestamp) {

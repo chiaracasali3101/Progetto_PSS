@@ -30,7 +30,9 @@ public class FileScoreManager implements ScoreManager {
 
     /**
      * Constructor for FileScoreManager that takes a file path as a parameter.
-     * @param filePath
+     * @param filePath the path to the file where scores will be saved and loaded from
+     * @throws NullPointerException if {@code filePath} is null
+     * 
      */
     public FileScoreManager(String filePath) {   //riceve dall'esterno il percorso del file
         this.filePath = Path.of(filePath);
