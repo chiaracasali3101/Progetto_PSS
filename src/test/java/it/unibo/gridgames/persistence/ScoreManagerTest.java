@@ -42,4 +42,20 @@ public class ScoreManagerTest {
 
         //assertEquals(2, this.scoreManager.getNumberOfGamesPlayed(null), "Il numero totale di giochi giocati dovrebbe essere 2");
     }
+
+    @Test 
+    public void getHighestScore() throws IOException {
+        final LocalDateTime now = LocalDateTime.now().withNano(0);
+        final GameRecord record1 = new GameRecord("Alice", 100, GameType.GAME_2048, 10, 60L, now);
+        final GameRecord record2 = new GameRecord("Bob", 200, GameType.GAME_2048, 20, 120L, now);
+        final GameRecord record3 = new GameRecord("Charlie", 300, GameType.GAME_2048, 30, 180L, now);
+
+        this.scoreManager.saveScore(record1);
+        this.scoreManager.saveScore(record2);
+        this.scoreManager.saveScore(record3);
+
+        final List<GameRecord> topScores = this.scoreManager.getTopScores(GameType.GAME_2048, 1);
+        assertEquals(1, topScores.size(), "Dovrebbe esserci un solo record nella classifica");
+        assertEquals(300, topScores.get(0).getScore(), "Il punteggio più alto dovrebbe essere 300");
+    }
 }
