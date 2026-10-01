@@ -2,6 +2,9 @@ package it.unibo.gridgames.view;
 
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -14,6 +17,8 @@ public class MainAppView extends BorderPane {
         BorderPane.setAlignment(titleLabel, Pos.CENTER); //titolo in alto al centro
         BorderPane.setMargin(titleLabel, new Insets(30, 0, 20, 0));
         this.setTop(titleLabel);
+        titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 36)); //testo
+        titleLabel.setTextFill(Color.DARKORANGE); //colore
        
         //bottoni
         final Button btn2048 = new Button("2048");
@@ -28,9 +33,17 @@ public class MainAppView extends BorderPane {
         grid.setVgap(10);
 
         grid.add(btn2048, 0, 0);
+        btn2048.setStyle("-fx-background-color: darkorange; -fx-text-fill: white; -fx-font-weight: bold;");
+        btn2048.setStyle("-fx-background-color: #e67e22; -fx-text-fill: white; -fx-background-radius: 8;");
         grid.add(btnGiocoDel15, 1, 0);
+        btnGiocoDel15.setStyle("-fx-background-color: darkorange; -fx-text-fill: white; -fx-font-weight: bold;");
+        btnGiocoDel15.setStyle("-fx-background-color: #e67e22; -fx-text-fill: white; -fx-background-radius: 8;");
         grid.add(btnSudoku, 0, 1);
+        btnSudoku.setStyle("-fx-background-color: darkorange; -fx-text-fill: white; -fx-font-weight: bold;");
+        btnSudoku.setStyle("-fx-background-color: #e67e22; -fx-text-fill: white; -fx-background-radius: 8;");
         grid.add(btnClassifica, 1, 1);
+        btnClassifica.setStyle("-fx-background-color: darkorange; -fx-text-fill: white; -fx-font-weight: bold;");
+        btnClassifica.setStyle("-fx-background-color: #e67e22; -fx-text-fill: white; -fx-background-radius: 8;");
 
         this.setCenter(grid); //gliglia al centro
     }
