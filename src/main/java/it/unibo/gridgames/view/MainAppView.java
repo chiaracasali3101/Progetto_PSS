@@ -16,8 +16,8 @@ public class MainAppView extends BorderPane {
         //bottoni
         private final Button btn2048 = new Button("2048");
         private final Button btnSudoku = new Button("Sudoku");
-        private final Button btnGiocoDel15 = new Button("Gioco del 15");
-        private final Button btnClassifica = new Button("Classifica");
+        private final Button btn15Game = new Button("Gioco del 15");
+        private final Button btnLeaderboard = new Button("Classifica");
 
     public MainAppView() {
         final Label titleLabel = new Label("GridGames");
@@ -36,15 +36,15 @@ public class MainAppView extends BorderPane {
         grid.add(btn2048, 0, 0);
         btn2048.setStyle("-fx-background-color: darkorange; -fx-text-fill: white; -fx-font-weight: bold;");
         btn2048.setStyle("-fx-background-color: #e67e22; -fx-text-fill: white; -fx-background-radius: 8;");
-        grid.add(btnGiocoDel15, 1, 0);
-        btnGiocoDel15.setStyle("-fx-background-color: darkorange; -fx-text-fill: white; -fx-font-weight: bold;");
-        btnGiocoDel15.setStyle("-fx-background-color: #e67e22; -fx-text-fill: white; -fx-background-radius: 8;");
+        grid.add(btn15Game, 1, 0);
+        btn15Game.setStyle("-fx-background-color: darkorange; -fx-text-fill: white; -fx-font-weight: bold;");
+        btn15Game.setStyle("-fx-background-color: #e67e22; -fx-text-fill: white; -fx-background-radius: 8;");
         grid.add(btnSudoku, 0, 1);
         btnSudoku.setStyle("-fx-background-color: darkorange; -fx-text-fill: white; -fx-font-weight: bold;");
         btnSudoku.setStyle("-fx-background-color: #e67e22; -fx-text-fill: white; -fx-background-radius: 8;");
-        grid.add(btnClassifica, 1, 1);
-        btnClassifica.setStyle("-fx-background-color: darkorange; -fx-text-fill: white; -fx-font-weight: bold;");
-        btnClassifica.setStyle("-fx-background-color: #e67e22; -fx-text-fill: white; -fx-background-radius: 8;");
+        grid.add(btnLeaderboard, 1, 1);
+        btnLeaderboard.setStyle("-fx-background-color: darkorange; -fx-text-fill: white; -fx-font-weight: bold;");
+        btnLeaderboard.setStyle("-fx-background-color: #e67e22; -fx-text-fill: white; -fx-background-radius: 8;");
 
         this.setCenter(grid); //gliglia al centro
     }
@@ -62,7 +62,7 @@ public class MainAppView extends BorderPane {
      * @param handler
      */
     public void setOnGiocoDel1Selected(final Runnable handler) {
-        this.btnGiocoDel15.setOnAction(e -> handler.run());
+        this.btn15Game.setOnAction(e -> handler.run());
     }
 
     /**
@@ -78,6 +78,6 @@ public class MainAppView extends BorderPane {
      * @param handler
      */
     public void setOnClassificaSelected(final Runnable handler) {
-        this.btnClassifica.setOnAction(e -> handler.run());
+        this.btnLeaderboard.setOnAction(e -> handler.run());
     }
 }
