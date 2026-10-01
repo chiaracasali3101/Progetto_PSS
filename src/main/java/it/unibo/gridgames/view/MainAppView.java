@@ -58,7 +58,7 @@ public class MainAppView extends BorderPane {
     }
 
     /**
-     * Sets the action handler for the Gioco del 15 button
+     * Sets the action handler for the 15Game button
      * @param handler
      */
     public void setOnGiocoDel1Selected(final Runnable handler) {
@@ -74,10 +74,10 @@ public class MainAppView extends BorderPane {
     }
 
     /**
-     * Sets the action handler for the Classifica button
+     * Sets the action handler for the Leader button
      * @param handler
      */
-    public void setOnClassificaSelected(final Runnable handler) {
+    public void setOnLeaderboardSelected(final Runnable handler) {
         this.btnLeaderboard.setOnAction(e -> handler.run());
     }
 }

@@ -1,5 +1,6 @@
 package it.unibo.gridgames;
 
+import it.unibo.gridgames.view.LeaderboardView;
 import it.unibo.gridgames.view.MainAppView;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -22,11 +23,19 @@ public class MainApp extends Application {
         view.setOn2048Selected(() -> System.out.println("Avvio 2048... (Jacopo)"));
         view.setOnSudokuSelected(() -> System.out.println("Avvio Sudoku... (Audray)"));
         view.setOnGiocoDel1Selected(() -> System.out.println("Avvio Gioco del 15... (Martina)"));
-        view.setOnClassificaSelected(() -> {System.out.println("Apertura Classifics & Statistiche (Chiara)");});
+        view.setOnLeaderboardSelected(() -> {System.out.println("Apertura Classifics & Statistiche (Chiara)");});
 
         stage.setTitle("GridGames");
         stage.setScene(scene);
         stage.show();
+
+        view.setOnLeaderboardSelected(() -> {
+        final LeaderboardView leaderboardView = new LeaderboardView();
+        leaderboardView.setOnBackSelected(() -> scene.setRoot(view));
+
+    //mostra la classifica
+    scene.setRoot(leaderboardView);
+});
     }
 
     /**
