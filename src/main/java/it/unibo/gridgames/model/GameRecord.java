@@ -2,18 +2,38 @@ package it.unibo.gridgames.model;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * 
+ * Represents an immutable record of a completed game session, tracking player performance metrics, game type, and completion time.
+ */
+
 public class GameRecord {
     private final String playerName;
     private final int score;
-    private final String gameType;
+    private final GameType gameType;
     private final int moves;
-    private long durationSeconds = 0;
+    private final long durationSeconds;
     private final java.time.LocalDateTime timestamp;
 
+    /**
+     * Constructs a new {@code GameRecord} instance.
+    * @param playerName the name of the player
+    * @param score the score achieved by the player
+    * @param gameType the type of the game played
+    * @param moves the number of moves made by the player
+    * @param durationSeconds the duration of the game in seconds
+    * @param timestamp the timestamp of when the game was played
+    * @throws IllegalArgumentException if playerName is null or blank, or if score, moves, or durationSeconds are negative
+    * @throws NullPointerException if gameType or timestamp is null
+     */
+
     //costruttore per il record di gioco
-    public GameRecord (String playerName, int score, String gameType, int moves, java.time.LocalDateTime timestamp){
+    public GameRecord( final String playerName, final int score, final GameType gameType, final int moves, final long durationSeconds, final LocalDateTime timestamp) {
         if (playerName == null || playerName.isBlank()) {
             throw new IllegalArgumentException("Player name cannot be null or blank");
+        }
+        if (playerName.contains(",")) {
+            throw new IllegalArgumentException("Player name cannot contain commas");
         }
         if (score < 0 || moves < 0 || durationSeconds < 0) {
             throw new IllegalArgumentException("Metrics cannot be negative");
@@ -21,10 +41,10 @@ public class GameRecord {
         
         this.playerName= playerName;
         this.score= score;
-        this.gameType= gameType;
+        this.gameType = Objects.requireNonNull(gameType, "GameType cannot be null");
+        this.timestamp = Objects.requireNonNull(timestamp, "Timestamp cannot be null");
         this.moves = moves;
-        this.durationSeconds = 0;
-        this.timestamp = timestamp;
+        this.durationSeconds = durationSeconds;
     }
 
     // metodi getter pubblici per accedere ai campi privati della classe
@@ -34,7 +54,7 @@ public class GameRecord {
     }
 
     //gioco
-    public String getGameType() { 
+    public GameType getGameType() { 
         return this.gameType; 
     }
 

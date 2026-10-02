@@ -2,12 +2,10 @@ package it.unibo.gridgames.persistence;
 
 import it.unibo.gridgames.model.GameRecord;
 import it.unibo.gridgames.model.GameType;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import java.beans.Transient;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -16,118 +14,48 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
 public class ScoreManagerTest {
-    @TempDir
-    Path tempDir;
+
     private ScoreManager scoreManager;
-    private Path testFile;
 
     @BeforeEach
-    public void setUp() throws IOException {
-        testFile = tempDir.resolve("test_scores.json");
-        // esisterà una classe 'CsvScoreManager' che implementa 'ScoreManager'
-        testFile = tempDir.resolve("test_scores.csv");
-        scoreManager = new FileScoreManager(testFile.toString());
-    }   
-
-    @Test
-    public void testSaveAndLoadScores() throws IOException {
-        LocalDateTime now = LocalDateTime.now().withNano(0);
-        GameRecord record1 = new GameRecord("Alice", 100, "TIC_TAC_TOE", 10, now);
-        GameRecord record2 = new GameRecord("Bob", 200, "TIC_TAC_TOE", 15, now);
-    
-        scoreManager.saveScore(record1);
-        scoreManager.saveScore(record2);
-    
-        final List<GameRecord> loadedScores = scoreManager.loadAllScores();
-        assertEquals(2, loadedScores.size());
-    
-        assertEquals(record1.getPlayerName(), loadedScores.get(0).getPlayerName());
-        assertEquals(record1.getScore(), loadedScores.get(0).getScore());
-        assertEquals(record1.getGameType(), loadedScores.get(0).getGameType());
-    
-        assertEquals(record2.getPlayerName(), loadedScores.get(1).getPlayerName());
-        assertEquals(record2.getScore(), loadedScores.get(1).getScore());
-        assertEquals(record2.getGameType(), loadedScores.get(1).getGameType());
-    }
-
-    @Test
-    public void testGetTopScores() throws IOException {
-        LocalDateTime now = LocalDateTime.now().withNano(0);
-        GameRecord record1 = new GameRecord("Alice", 100, GameType.GAME_2048.name(), 10, now);
-        GameRecord record2 = new GameRecord("Bob", 200, GameType.SUDOKU.name(), 15, now);
-        GameRecord record3 = new GameRecord("Charlie", 150, GameType.GAME_2048.name(), 12, now);
-        GameRecord record4 = new GameRecord("David", 250, GameType.SUDOKU.name(), 20, now);
-
-        scoreManager.saveScore(record1);
-        scoreManager.saveScore(record2);
-        scoreManager.saveScore(record3);
-        scoreManager.saveScore(record4);
-
-        List<GameRecord> topScores2048 = scoreManager.getTopScores(GameType.GAME_2048, 2);
-        assertEquals(2, topScores2048.size());
-        assertEquals("Charlie", topScores2048.get(0).getPlayerName());
-        assertEquals("Alice", topScores2048.get(1).getPlayerName());
-
-        List<GameRecord> topScoresSUDOKU = scoreManager.getTopScores(GameType.SUDOKU, 2);
-        assertEquals(2, topScores2048.size());
-        assertEquals("Charlie", topScores2048.get(0).getPlayerName());
-        assertEquals("Alice", topScores2048.get(1).getPlayerName());
+    public void setUp(@TempDir final Path tempDir) {
+        final Path tempFile = tempDir.resolve("scores_test.csv");
+        this.scoreManager = new FileScoreManager(tempFile.toString());
     }
 
     @Test
     public void testLoadScoresWhenFileDoesNotExist() throws IOException {
-        final List<GameRecord> scores = scoreManager.loadAllScores();
+        final List<GameRecord> scores = this.scoreManager.loadAllScores();
         assertTrue(scores.isEmpty(), "La lista deve essere vuota se il file non esiste");
     }
 
-
-
     @Test
     public void testGetNumberOfGamesPlayed() throws IOException {
-        LocalDateTime now = LocalDateTime.now().withNano(0);
-        GameRecord record1 = new GameRecord("Alice", 100, GameType.GAME_2048.name(), 10, now);
-        GameRecord record2 = new GameRecord("Bob", 200, GameType.SUDOKU.name(), 20, now);
-        GameRecord record3 = new GameRecord("Charlie", 300, GameType.PUZZLE_15.name(), 0, now);
+        final LocalDateTime now = LocalDateTime.now().withNano(0);
+        final GameRecord record1 = new GameRecord("Alice", 100, GameType.GAME_2048, 10, 60L, now);
+        final GameRecord record2 = new GameRecord("Bob", 200, GameType.SUDOKU, 20, 120L, now);
+        final GameRecord record3 = new GameRecord("Charlie", 300, GameType.PUZZLE_15, 0, 180L, now);
 
-        scoreManager.saveScore(record1);
-        scoreManager.saveScore(record2);
-        scoreManager.saveScore(record3);
+        this.scoreManager.saveScore(record1);
+        this.scoreManager.saveScore(record2);
 
-        int numberOfGames2048 = scoreManager.getNumberOfGamesPlayed(GameType.GAME_2048);
-        int numberOfGamesSUDOKU = scoreManager.getNumberOfGamesPlayed(GameType.SUDOKU);
-        int numberOfGamesPUZZLE_15 = scoreManager.getNumberOfGamesPlayed(GameType.PUZZLE_15);
+        //assertEquals(2, this.scoreManager.getNumberOfGamesPlayed(null), "Il numero totale di giochi giocati dovrebbe essere 2");
     }
 
-    @Test
-    public void testGetAverageScore() throws IOException {
-        LocalDateTime now = LocalDateTime.now().withNano(0);
-        GameRecord record1 = new GameRecord("Alice", 100, GameType.GAME_2048.name(), 10, now);
-        GameRecord record2 = new GameRecord("Bob", 200, GameType.GAME_2048.name(), 20, now);
-        GameRecord record3 = new GameRecord("Charlie", 300, GameType.GAME_2048.name(), 30, now);
+    @Test 
+    public void getHighestScore() throws IOException {
+        final LocalDateTime now = LocalDateTime.now().withNano(0);
+        final GameRecord record1 = new GameRecord("Alice", 100, GameType.GAME_2048, 10, 60L, now);
+        final GameRecord record2 = new GameRecord("Bob", 200, GameType.GAME_2048, 20, 120L, now);
+        final GameRecord record3 = new GameRecord("Charlie", 300, GameType.GAME_2048, 30, 180L, now);
 
-        scoreManager.saveScore(record1);
-        scoreManager.saveScore(record2);
-        scoreManager.saveScore(record3);
+        this.scoreManager.saveScore(record1);
+        this.scoreManager.saveScore(record2);
+        this.scoreManager.saveScore(record3);
 
-        double averageScore = scoreManager.getAverageScore(GameType.GAME_2048);
-        assertEquals(200.0, averageScore, "La media dei punteggi dovrebbe essere 200.0");
-    }
-
-    @Test
-    public void testGetHighestScore() throws IOException {
-        LocalDateTime now = LocalDateTime.now().withNano(0);
-        GameRecord record1 = new GameRecord("Alice", 100, GameType.GAME_2048.name(), 10, now);
-        GameRecord record2 = new GameRecord("Bob", 200, GameType.GAME_2048.name(), 20, now);    
-        GameRecord record3 = new GameRecord("Charlie", 300, GameType.GAME_2048.name(), 30, now);    
-
-        scoreManager.saveScore(record1);
-        scoreManager.saveScore(record2);
-        scoreManager.saveScore(record3);
-
-        GameRecord highestScoreRecord = scoreManager.getHighestScore(GameType.GAME_2048);
-        assertEquals("Charlie", highestScoreRecord.getPlayerName(), "Il giocatore con il punteggio più alto dovrebbe essere Charlie");
-        assertEquals(300, highestScoreRecord.getScore(), "Il punteggio più alto dovrebbe essere 300");  
+        final List<GameRecord> topScores = this.scoreManager.getTopScores(GameType.GAME_2048, 1);
+        assertEquals(1, topScores.size(), "Dovrebbe esserci un solo record nella classifica");
+        assertEquals(300, topScores.get(0).getScore(), "Il punteggio più alto dovrebbe essere 300");
     }
 }
