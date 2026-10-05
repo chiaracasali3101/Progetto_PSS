@@ -10,13 +10,11 @@ import it.unibo.gridgames.model.GameType;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -61,7 +59,7 @@ public class FileScoreManager implements ScoreManager {
             final long durationSeconds = record.getDurationSeconds();
             final LocalDateTime timestamp = record.getTimestamp();
 
-            String line = String.format("%s,%s,%d,%d,%d,%s%n", playerName, gameType, score, moves, durationSeconds, timestamp);
+            final String line = String.format("%s,%s,%d,%d,%d,%s%n", playerName, gameType, score, moves, durationSeconds, timestamp);
 
             //scrittura nel file
             try (BufferedWriter writer = Files.newBufferedWriter(
@@ -116,7 +114,7 @@ public class FileScoreManager implements ScoreManager {
             throw new IllegalArgumentException("Limit must be positive");
         }
             return loadAllScores().stream()
-                .filter(record -> record.getGameType().equals(gameType.name())) // <-- USA .name() QUI
+                .filter(record -> record.getGameType() == gameType) 
                 .sorted(Comparator.comparingInt(GameRecord::getScore).reversed())
                 .limit(limit)
                 .collect(Collectors.toList());
@@ -136,7 +134,7 @@ public class FileScoreManager implements ScoreManager {
     public double getAverageScore(final GameType gameType) {
         Objects.requireNonNull(gameType, "GameType cannot be null");
             return loadAllScores().stream()
-                .filter(record -> record.getGameType().equals(gameType.name()))
+                .filter(record -> record.getGameType() == gameType)
                 .mapToInt(GameRecord::getScore)
                 .average()
                 .orElse(0.0);
@@ -147,7 +145,7 @@ public class FileScoreManager implements ScoreManager {
     public GameRecord getHighestScore(final GameType gameType) {
         Objects.requireNonNull(gameType, "GameType cannot be null");
         return loadAllScores().stream()
-            .filter(record -> record.getGameType().equals(gameType.name()))
+            .filter(record -> record.getGameType() == gameType)
             .max(Comparator.comparingInt(GameRecord::getScore))
             .orElse(null);
     }
