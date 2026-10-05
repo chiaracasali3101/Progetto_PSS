@@ -1,13 +1,16 @@
-# Cartelle di compilazione
+# Cartelle di compilazione e build tool
 bin/
 build/
 target/
 out/
+.gradle/
 
-# Configurazione VS Code e OS
+# Configurazione IDE e OS
 .vscode/
+.idea/
+*.iml
 .DS_Store
 *.class
 .project
 .classpath
-.settings/.gradle/
+.settings/
