@@ -16,10 +16,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ScoreManagerTest {
 
+    @TempDir
+    Path tempDir;
+    
     private ScoreManager scoreManager;
 
     @BeforeEach
-    public void setUp(@TempDir final Path tempDir) {
+    public void setUp() {
         final Path tempFile = tempDir.resolve("scores_test.csv");
         this.scoreManager = new FileScoreManager(tempFile.toString());
     }
@@ -39,12 +42,18 @@ public class ScoreManagerTest {
 
         this.scoreManager.saveScore(record1);
         this.scoreManager.saveScore(record2);
+        this.scoreManager.saveScore(record3);
 
-        //assertEquals(2, this.scoreManager.getNumberOfGamesPlayed(null), "Il numero totale di giochi giocati dovrebbe essere 2");
+        System.out.println("NOME ENUM: " + GameType.PUZZLE_15.name());
+        System.out.println("RECORD LETTI: " + this.scoreManager.loadAllScores());
+
+        assertEquals(1, this.scoreManager.getNumberOfGamesPlayed(GameType.GAME_2048));
+        assertEquals(1, this.scoreManager.getNumberOfGamesPlayed(GameType.SUDOKU));
+        assertEquals(1, this.scoreManager.getNumberOfGamesPlayed(GameType.PUZZLE_15));
     }
 
     @Test 
-    public void getHighestScore() throws IOException {
+    public void getTopScore() throws IOException {
         final LocalDateTime now = LocalDateTime.now().withNano(0);
         final GameRecord record1 = new GameRecord("Alice", 100, GameType.GAME_2048, 10, 60L, now);
         final GameRecord record2 = new GameRecord("Bob", 200, GameType.GAME_2048, 20, 120L, now);
@@ -58,4 +67,15 @@ public class ScoreManagerTest {
         assertEquals(1, topScores.size(), "Dovrebbe esserci un solo record nella classifica");
         assertEquals(300, topScores.get(0).getScore(), "Il punteggio più alto dovrebbe essere 300");
     }
+
+    @Test
+    public void testGetHighestScore() throws IOException {
+    final LocalDateTime now = LocalDateTime.now().withNano(0);
+    this.scoreManager.saveScore(new GameRecord("Alice", 100, GameType.GAME_2048, 10, 60L, now));
+    this.scoreManager.saveScore(new GameRecord("Bob", 300, GameType.GAME_2048, 20, 120L, now));
+
+    final GameRecord highest = this.scoreManager.getHighestScore(GameType.GAME_2048);
+    assertEquals(300, highest.getScore());
+    assertEquals("Bob", highest.getPlayerName());
+}
 }

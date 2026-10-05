@@ -59,7 +59,7 @@ public class FileScoreManager implements ScoreManager {
             final long durationSeconds = record.getDurationSeconds();
             final LocalDateTime timestamp = record.getTimestamp();
 
-            final String line = String.format("%s,%s,%d,%d,%d,%s%n", playerName, gameType, score, moves, durationSeconds, timestamp);
+            final String line = String.format("%s,%d,%s,%d,%d,%s%n", playerName, score, gameType, moves, durationSeconds, timestamp);
 
             //scrittura nel file
             try (BufferedWriter writer = Files.newBufferedWriter(
@@ -90,10 +90,10 @@ public class FileScoreManager implements ScoreManager {
                 final String[] tokens = line.split(",");
                 if (tokens.length >= 6) {
                     final String playerName = tokens[0].trim();
-                    final GameType gameType = GameType.valueOf(tokens[1].trim().toUpperCase(Locale.ROOT));
-                    final int score = Integer.parseInt(tokens[2].trim());
+                    final int score = Integer.parseInt(tokens[1].trim());
+                    final GameType gameType = GameType.valueOf(tokens[2].trim().toUpperCase(Locale.ROOT));
                     final int moves = Integer.parseInt(tokens[3].trim());
-                    final int durationSeconds = Integer.parseInt(tokens[4].trim());
+                    final long durationSeconds = Long.parseLong(tokens[4].trim());
                     final LocalDateTime timestamp = LocalDateTime.parse(tokens[5].trim());
                     final GameRecord record = new GameRecord(playerName, score, gameType, moves, durationSeconds, timestamp);
                     records.add(record);
@@ -125,7 +125,7 @@ public class FileScoreManager implements ScoreManager {
     public int getNumberOfGamesPlayed(final GameType gameType) {
         Objects.requireNonNull(gameType, "GameType cannot be null");
             return (int) loadAllScores().stream()
-                .filter(record -> record.getGameType().equals(gameType.name()))
+                .filter(record -> record.getGameType() == gameType) 
                 .count();
     }
 
