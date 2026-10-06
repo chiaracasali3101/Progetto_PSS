@@ -1,4 +1,5 @@
 package it.unibo.gridgames.model;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -6,7 +7,8 @@ import java.util.Objects;
 
 /**
  * 
- * Represents an immutable record of a completed game session, tracking player performance metrics, game type, and completion time.
+ * Represents an immutable record of a completed game session, tracking player
+ * performance metrics, game type, and completion time.
  */
 
 public class GameRecordImpl {
@@ -19,18 +21,21 @@ public class GameRecordImpl {
 
     /**
      * Constructs a new {@code GameRecordImpl} instance.
-     * @param playerName the name of the player
-     * @param score the score achieved by the player
-     * @param gameType the type of the game played
-     * @param moves the number of moves made by the player
+     * 
+     * @param playerName      the name of the player
+     * @param score           the score achieved by the player
+     * @param gameType        the type of the game played
+     * @param moves           the number of moves made by the player
      * @param durationSeconds the duration of the game in seconds
-     * @param timestamp the timestamp of when the game was played
-     * @throws IllegalArgumentException if playerName is null or blank, or if score, moves, or durationSeconds are negative
-     * @throws NullPointerException if gameType or timestamp is null
+     * @param timestamp       the timestamp of when the game was played
+     * @throws IllegalArgumentException if playerName is null or blank, or if score,
+     *                                  moves, or durationSeconds are negative
+     * @throws NullPointerException     if gameType or timestamp is null
      */
 
-    //costruttore per il record di gioco
-    public GameRecordImpl( final String playerName, final int score, final GameType gameType, final int moves, final long durationSeconds, final LocalDateTime timestamp) {
+    // costruttore per il record di gioco
+    public GameRecordImpl(final String playerName, final int score, final GameType gameType, final int moves,
+            final long durationSeconds, final LocalDateTime timestamp) {
         if (playerName == null || playerName.isBlank()) {
             throw new IllegalArgumentException("Player name cannot be null or blank");
         }
@@ -40,9 +45,9 @@ public class GameRecordImpl {
         if (score < 0 || moves < 0 || durationSeconds < 0) {
             throw new IllegalArgumentException("Metrics cannot be negative");
         }
-        
-        this.playerName= playerName;
-        this.score= score;
+
+        this.playerName = playerName;
+        this.score = score;
         this.gameType = Objects.requireNonNull(gameType, "GameType cannot be null");
         this.timestamp = Objects.requireNonNull(timestamp, "Timestamp cannot be null");
         this.moves = moves;
@@ -50,33 +55,52 @@ public class GameRecordImpl {
     }
 
     // metodi getter pubblici per accedere ai campi privati della classe
-    //nome giocatore
-    public String getPlayerName() { 
-        return this.playerName; 
+    // nome giocatore
+    /**
+     * {@inheritDoc}
+     */
+    public final String getPlayerName() {
+        return this.playerName;
     }
 
-    //gioco
-    public GameType getGameType() { 
-        return this.gameType; 
+    // gioco
+    /**
+     * {@inheritDoc}
+     */
+    public final GameType getGameType() {
+        return this.gameType;
     }
 
-    //punteggio
-    public int getScore() { 
-        return this.score; 
+    
+    // punteggio
+    /**
+     * {@inheritDoc}
+     */
+    public final int getScore() {
+        return this.score;
     }
 
-    //mosse
-    public int getMoves() { 
-        return this.moves; 
+    // mosse
+    /**
+     * {@inheritDoc}
+     */
+    public final int getMoves() {
+        return this.moves;
     }
 
-    //tempo
-    public long getDurationSeconds() { 
-        return this.durationSeconds; 
+    // tempo
+    /**
+     * {@inheritDoc}
+     */
+    public final long getDurationSeconds() {
+        return this.durationSeconds;
     }
 
-    //quando è stata giocata la partita
-    public LocalDateTime getTimestamp() { 
-        return this.timestamp; 
+    // quando è stata giocata la partita
+    /**
+     * {@inheritDoc}
+     */
+    public final LocalDateTime getTimestamp() {
+        return this.timestamp;
     }
 }

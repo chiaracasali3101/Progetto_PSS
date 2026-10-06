@@ -1,9 +1,8 @@
-//GameType = elenco dei giochi 
 package it.unibo.gridgames.model;
 
+//GameType = elenco dei giochi 
 /**
- * 
- * * Represents the available grid games in the application.
+ * Represents the available grid games in the application.
  */
 
 public enum GameType {
@@ -16,7 +15,8 @@ public enum GameType {
 
     /**
      * Constructs a GameType enum with a display name.
-     * @param name
+     * 
+     * @param name the display name of the game type
      */
     GameType(String name) {
         this.name = name;
@@ -24,7 +24,8 @@ public enum GameType {
 
     /**
      * Returns the display name of the game type.
-     * @return
+     * 
+     * @return the display name of the game type
      */
     public String getDisplayName() {
         return this.name;

@@ -18,9 +18,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 
- * ScoreManagerImpl is a class that implements the ScoreManager interface and provides functionality to save and load game scores from a file.
- * It uses a file path to store the scores and provides methods to save a score, load all scores, get top scores, get the number of games played, get the average score, and
+ * ScoreManagerImpl is a class that implements the ScoreManager interface and
+ * provides functionality to save and load game scores from a file.
+ * It uses a file path to store the scores and provides methods to save a score,
+ * load all scores, get top scores, get the number of games played, get the
+ * average score, and
  */
 
 public class ScoreManagerImpl implements ScoreManager {
@@ -28,30 +30,32 @@ public class ScoreManagerImpl implements ScoreManager {
 
     /**
      * Constructor for ScoreManagerImpl that takes a file path as a parameter.
-     * @param filePath the path to the file where scores will be saved and loaded from
-     * @throws NullPointerException if {@code filePath} is null
      * 
+     * @param filePath the path to the file where scores will be saved and loaded
+     * @throws NullPointerException if {@code filePath} is null
      */
-    public ScoreManagerImpl(String filePath) {   //riceve dall'esterno il percorso del file
+    public ScoreManagerImpl(String filePath) { // riceve dall'esterno il percorso del file
         this.filePath = Path.of(filePath);
     }
 
-
-    //implementazione dei metodi 
+    // implementazione dei metodi
 
     /**
-     * Saves a game score to the file. The method is synchronized to ensure thread safety when multiple threads attempt to save scores simultaneously.
+     * Saves a game score to the file. The method is synchronized to ensure thread
+     * safety when multiple threads attempt to save scores simultaneously.
+     * 
      * @param record
      * @throws IOException
      */
     @Override
-    public void saveScore(final GameRecordImpl record) throws IOException { //implementazione per salvare il punteggio nel file
+    public void saveScore(final GameRecordImpl record) throws IOException { // implementazione per salvare il punteggio
+                                                                            // nel file
         synchronized (this) {
 
-            //controllo valori nulli 
+            // controllo valori nulli
             Objects.requireNonNull(record, "Record cannot be null");
 
-            //logica per salvare il record nel file
+            // logica per salvare il record nel file
             final String playerName = record.getPlayerName();
             final int score = record.getScore();
             final String gameType = record.getGameType().name();
@@ -59,34 +63,34 @@ public class ScoreManagerImpl implements ScoreManager {
             final long durationSeconds = record.getDurationSeconds();
             final LocalDateTime timestamp = record.getTimestamp();
 
-            final String line = String.format("%s,%d,%s,%d,%d,%s%n", playerName, score, gameType, moves, durationSeconds, timestamp);
+            final String line = String.format("%s,%d,%s,%d,%d,%s%n", playerName, score, gameType, moves,
+                    durationSeconds, timestamp);
 
-            //scrittura nel file
+            // scrittura nel file
             try (BufferedWriter writer = Files.newBufferedWriter(
-                this.filePath,
-                StandardOpenOption.CREATE,
-                StandardOpenOption.APPEND)) {
-            writer.write(line);
-        }
+                    this.filePath,
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.APPEND)) {
+                writer.write(line);
+            }
         }
     }
-
 
     @Override
     public List<GameRecordImpl> loadAllScores() {
         if (!Files.exists(this.filePath)) {
             return List.of();
         }
-    
+
         try {
             final List<String> lines = Files.readAllLines(this.filePath);
             final List<GameRecordImpl> records = new ArrayList<>();
-    
+
             for (final String line : lines) {
                 if (line.isBlank()) {
                     continue;
                 }
-    
+
                 final String[] tokens = line.split(",");
                 if (tokens.length >= 6) {
                     final String playerName = tokens[0].trim();
@@ -95,7 +99,8 @@ public class ScoreManagerImpl implements ScoreManager {
                     final int moves = Integer.parseInt(tokens[3].trim());
                     final long durationSeconds = Long.parseLong(tokens[4].trim());
                     final LocalDateTime timestamp = LocalDateTime.parse(tokens[5].trim());
-                    final GameRecordImpl record = new GameRecordImpl(playerName, score, gameType, moves, durationSeconds, timestamp);
+                    final GameRecordImpl record = new GameRecordImpl(playerName, score, gameType, moves,
+                            durationSeconds, timestamp);
                     records.add(record);
                 }
             }
@@ -105,48 +110,44 @@ public class ScoreManagerImpl implements ScoreManager {
         }
     }
 
-
-    @Override 
+    @Override
     public List<GameRecordImpl> getTopScores(final GameType gameType, final int limit) {
         Objects.requireNonNull(gameType, "GameType cannot be null");
 
         if (limit <= 0) {
             throw new IllegalArgumentException("Limit must be positive");
         }
-            return loadAllScores().stream()
-                .filter(record -> record.getGameType() == gameType) 
+        return loadAllScores().stream()
+                .filter(record -> record.getGameType() == gameType)
                 .sorted(Comparator.comparingInt(GameRecordImpl::getScore).reversed())
                 .limit(limit)
                 .collect(Collectors.toList());
     }
 
-
-    @Override 
+    @Override
     public int getNumberOfGamesPlayed(final GameType gameType) {
         Objects.requireNonNull(gameType, "GameType cannot be null");
-            return (int) loadAllScores().stream()
-                .filter(record -> record.getGameType() == gameType) 
+        return (int) loadAllScores().stream()
+                .filter(record -> record.getGameType() == gameType)
                 .count();
     }
 
-
-    @Override 
+    @Override
     public double getAverageScore(final GameType gameType) {
         Objects.requireNonNull(gameType, "GameType cannot be null");
-            return loadAllScores().stream()
+        return loadAllScores().stream()
                 .filter(record -> record.getGameType() == gameType)
                 .mapToInt(GameRecordImpl::getScore)
                 .average()
                 .orElse(0.0);
     }
 
-
-    @Override 
+    @Override
     public GameRecordImpl getHighestScore(final GameType gameType) {
         Objects.requireNonNull(gameType, "GameType cannot be null");
         return loadAllScores().stream()
-            .filter(record -> record.getGameType() == gameType)
-            .max(Comparator.comparingInt(GameRecordImpl::getScore))
-            .orElse(null);
+                .filter(record -> record.getGameType() == gameType)
+                .max(Comparator.comparingInt(GameRecordImpl::getScore))
+                .orElse(null);
     }
 }

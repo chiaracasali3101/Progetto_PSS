@@ -19,6 +19,7 @@ public class LeaderboardView extends BorderPane {
 
     /**
      * Sets the action handler for the back button
+     * 
      * @param handler
      */
     public void setOnBackSelected(final Runnable handler) {

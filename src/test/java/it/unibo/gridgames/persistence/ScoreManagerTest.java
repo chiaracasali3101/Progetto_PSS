@@ -18,7 +18,7 @@ public class ScoreManagerTest {
 
     @TempDir
     Path tempDir;
-    
+
     private ScoreManager scoreManager;
 
     @BeforeEach
@@ -52,7 +52,7 @@ public class ScoreManagerTest {
         assertEquals(1, this.scoreManager.getNumberOfGamesPlayed(GameType.PUZZLE_15));
     }
 
-    @Test 
+    @Test
     public void getTopScore() throws IOException {
         final LocalDateTime now = LocalDateTime.now().withNano(0);
         final GameRecordImpl record1 = new GameRecordImpl("Alice", 100, GameType.GAME_2048, 10, 60L, now);
@@ -70,12 +70,12 @@ public class ScoreManagerTest {
 
     @Test
     public void testGetHighestScore() throws IOException {
-    final LocalDateTime now = LocalDateTime.now().withNano(0);
-    this.scoreManager.saveScore(new GameRecordImpl("Alice", 100, GameType.GAME_2048, 10, 60L, now));
-    this.scoreManager.saveScore(new GameRecordImpl("Bob", 300, GameType.GAME_2048, 20, 120L, now));
+        final LocalDateTime now = LocalDateTime.now().withNano(0);
+        this.scoreManager.saveScore(new GameRecordImpl("Alice", 100, GameType.GAME_2048, 10, 60L, now));
+        this.scoreManager.saveScore(new GameRecordImpl("Bob", 300, GameType.GAME_2048, 20, 120L, now));
 
-    final GameRecordImpl highest = this.scoreManager.getHighestScore(GameType.GAME_2048);
-    assertEquals(300, highest.getScore());
-    assertEquals("Bob", highest.getPlayerName());
-}
+        final GameRecordImpl highest = this.scoreManager.getHighestScore(GameType.GAME_2048);
+        assertEquals(300, highest.getScore());
+        assertEquals("Bob", highest.getPlayerName());
+    }
 }
