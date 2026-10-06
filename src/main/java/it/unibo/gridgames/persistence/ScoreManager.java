@@ -1,6 +1,6 @@
 package it.unibo.gridgames.persistence;
 
-import it.unibo.gridgames.model.GameRecord;
+import it.unibo.gridgames.model.GameRecordImpl;
 import it.unibo.gridgames.model.GameType;
 
 import java.io.IOException;
@@ -22,15 +22,15 @@ public interface ScoreManager {
      */
 
     //salva il punteggio di una partita appena finita nel file di persistenza
-    void saveScore(GameRecord record) throws IOException;
+    void saveScore(GameRecordImpl record) throws IOException;
 
     /**
      * Loads all game score records from storage.
      * @return
      * @throws IOException
      */
-    //riapre il file e converte tutti i record in oggetti GameRecord restituendo la lista
-    List<GameRecord> loadAllScores() throws IOException;
+    //riapre il file e converte tutti i record in oggetti GameRecordImpl restituendo la lista
+    List<GameRecordImpl> loadAllScores() throws IOException;
 
     /**
      * Retrieves the top scores for a specific game type, limited to a specified number of records.
@@ -39,7 +39,7 @@ public interface ScoreManager {
      * @return
      */
     //estrae la classifica filtrando il gioco e limitando il numero di record visualizzati
-    List<GameRecord> getTopScores(GameType gameType, int limit);
+    List<GameRecordImpl> getTopScores(GameType gameType, int limit);
 
 
     /**
@@ -64,5 +64,5 @@ public interface ScoreManager {
      * @return
      */
     //mostra il punteggio più alto di un gioco specifico
-    GameRecord getHighestScore(GameType gameType);
+    GameRecordImpl getHighestScore(GameType gameType);
 }
