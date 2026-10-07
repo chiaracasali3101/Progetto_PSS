@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -92,8 +93,10 @@ public class ScoreManagerTest {
         this.scoreManager.saveScore(record3);
 
         final List<GameRecordImpl> topScores = this.scoreManager.getTopScores(GameType.GAME_2048, 1);
-        assertEquals(UIConstants.MAX_SCORE, topScores.size(), "Dovrebbe esserci un solo record nella classifica");
-        assertEquals(UIConstants.RECORDS_LIMIT, topScores.get(0).getScore(), "Il punteggio più alto dovrebbe essere 300");
+ 
+        assertEquals(1, topScores.size(), "Dovrebbe esserci un solo record nella classifica");
+    
+        assertEquals(100, topScores.get(0).getScore(), "Il punteggio dovrebbe essere 100");
     }
 
     /**
@@ -103,13 +106,14 @@ public class ScoreManagerTest {
      */
     @Test
     public void testGetHighestScore() throws IOException {
-        final LocalDateTime now = LocalDateTime.now().withNano(0);
-        this.scoreManager.saveScore(new GameRecordImpl(ALICE, 100, GameType.GAME_2048, 10, 60L, now));
-        this.scoreManager.saveScore(new GameRecordImpl(BOB, 300, GameType.SUDOKU, 20, 120L, now));
-        this.scoreManager.saveScore(new GameRecordImpl(CHARLIE, 300, GameType.PUZZLE_15, 20, 120L, now));
+    final LocalDateTime now = LocalDateTime.now().withNano(0);
+    this.scoreManager.saveScore(new GameRecordImpl(ALICE, 100, GameType.GAME_2048, 10, 60L, now));
+    this.scoreManager.saveScore(new GameRecordImpl(BOB, 300, GameType.GAME_2048, 20, 120L, now)); // BOB su GAME_2048
+    this.scoreManager.saveScore(new GameRecordImpl(CHARLIE, 200, GameType.PUZZLE_15, 20, 120L, now));
 
-        final GameRecordImpl highest = this.scoreManager.getHighestScore(GameType.GAME_2048);
-        assertEquals(300, highest.getScore());
-        assertEquals("BOB", highest.getPlayerName());
-    }
+    final GameRecordImpl highest = this.scoreManager.getHighestScore(GameType.GAME_2048);
+    assertNotNull(highest, "Il punteggio più alto non dovrebbe essere null");
+    assertEquals(300, highest.getScore());
+    assertEquals(BOB, highest.getPlayerName());
+}
 }
