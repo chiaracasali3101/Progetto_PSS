@@ -7,9 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * 
- * Interface defining the persistence operations and statistical queries for
- * managing game score records.
+ * Interface defining the persistence operations and statistical queries for managing game score records.
  */
 
 // interfaccia per la gestione dei punteggi dei giochi
@@ -37,8 +35,7 @@ public interface ScoreManager {
     List<GameRecordImpl> loadAllScores() throws IOException;
 
     /**
-     * Retrieves the top scores for a specific game type, limited to a specified
-     * number of records.
+     * Retrieves the top scores for a specific game type, limited to a specified number of records.
      * 
      * @param gameType the type of game for which to retrieve top scores
      * @param limit the maximum number of top scores to retrieve

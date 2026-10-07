@@ -4,9 +4,16 @@ import javafx.scene.layout.BorderPane;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 
+/**
+ * LeaderboardView represents the user interface for displaying the leaderboard of game scores.
+ */
+
 public class LeaderboardView extends BorderPane {
     private final Button btnBack = new Button("Indietro");
 
+    /**
+     * Constructs a new LeaderboardView instance and initializes the UI components.
+     */
     public LeaderboardView() {
         this.setStyle("-fx-background-color: #f7f9fa;");
 
@@ -14,7 +21,6 @@ public class LeaderboardView extends BorderPane {
         BorderPane.setMargin(this.btnBack, new Insets(15));
 
         btnBack.setStyle("-fx-background-color: darkorange; -fx-text-fill: white; -fx-font-weight: bold;");
-
     }
 
     /**

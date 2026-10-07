@@ -44,12 +44,12 @@ public class ScoreManagerImpl implements ScoreManager {
      * Saves a game score to the file. The method is synchronized to ensure thread
      * safety when multiple threads attempt to save scores simultaneously.
      * 
-     * @param record
-     * @throws IOException
+     * @param record the game record to be saved
+     * @throws IOException signals that an I/O exception of some sort has occurred
      */
     @Override
-    public void saveScore(final GameRecordImpl record) throws IOException { // implementazione per salvare il punteggio
-                                                                            // nel file
+    public final void saveScore(final GameRecordImpl record) throws IOException { // implementazione per salvare il
+                                                                                  // punteggio
         synchronized (this) {
 
             // controllo valori nulli
@@ -77,7 +77,7 @@ public class ScoreManagerImpl implements ScoreManager {
     }
 
     @Override
-    public List<GameRecordImpl> loadAllScores() {
+    public final List<GameRecordImpl> loadAllScores() {
         if (!Files.exists(this.filePath)) {
             return List.of();
         }
@@ -111,7 +111,7 @@ public class ScoreManagerImpl implements ScoreManager {
     }
 
     @Override
-    public List<GameRecordImpl> getTopScores(final GameType gameType, final int limit) {
+    public final List<GameRecordImpl> getTopScores(final GameType gameType, final int limit) {
         Objects.requireNonNull(gameType, "GameType cannot be null");
 
         if (limit <= 0) {
@@ -125,7 +125,7 @@ public class ScoreManagerImpl implements ScoreManager {
     }
 
     @Override
-    public int getNumberOfGamesPlayed(final GameType gameType) {
+    public final int getNumberOfGamesPlayed(final GameType gameType) {
         Objects.requireNonNull(gameType, "GameType cannot be null");
         return (int) loadAllScores().stream()
                 .filter(record -> record.getGameType() == gameType)
@@ -133,7 +133,7 @@ public class ScoreManagerImpl implements ScoreManager {
     }
 
     @Override
-    public double getAverageScore(final GameType gameType) {
+    public final double getAverageScore(final GameType gameType) {
         Objects.requireNonNull(gameType, "GameType cannot be null");
         return loadAllScores().stream()
                 .filter(record -> record.getGameType() == gameType)
@@ -143,7 +143,7 @@ public class ScoreManagerImpl implements ScoreManager {
     }
 
     @Override
-    public GameRecordImpl getHighestScore(final GameType gameType) {
+    public final GameRecordImpl getHighestScore(final GameType gameType) {
         Objects.requireNonNull(gameType, "GameType cannot be null");
         return loadAllScores().stream()
                 .filter(record -> record.getGameType() == gameType)

@@ -6,9 +6,7 @@ import java.util.Objects;
 //classe 
 
 /**
- * 
- * Represents an immutable record of a completed game session, tracking player
- * performance metrics, game type, and completion time.
+ * Represents an immutable record of a completed game session, tracking player performance metrics, game type, and completion time.
  */
 
 public class GameRecordImpl {
@@ -28,8 +26,7 @@ public class GameRecordImpl {
      * @param moves           the number of moves made by the player
      * @param durationSeconds the duration of the game in seconds
      * @param timestamp       the timestamp of when the game was played
-     * @throws IllegalArgumentException if playerName is null or blank, or if score,
-     *                                  moves, or durationSeconds are negative
+     * @throws IllegalArgumentException if playerName is null or blank, or if score, moves, or durationSeconds are negative
      * @throws NullPointerException     if gameType or timestamp is null
      */
 
@@ -71,7 +68,6 @@ public class GameRecordImpl {
         return this.gameType;
     }
 
-    
     // punteggio
     /**
      * {@inheritDoc}

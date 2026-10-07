@@ -50,35 +50,36 @@ public class MainAppView extends BorderPane {
     }
 
     /**
-     * Sets the action handler for the 2048 button
-     * @param handler
+     * Sets the action handler for the 2048 button.
+     * 
+     * @param handler sets the action handler for the 2048 button
      */
     public void setOn2048Selected(final Runnable handler) {
         this.btn2048.setOnAction(e -> handler.run());
     }
 
     /**
-     * Sets the action handler for the 15Game button
+     * Sets the action handler for the 15Game button.
      * 
-     * @param handler
+     * @param handler sets the action handler for the 15Game button
      */
     public void setOnGiocoDel15Selected(final Runnable handler) {
         this.btn15Game.setOnAction(e -> handler.run());
     }
 
     /**
-     * Sets the action handler for the Sudoku button
+     * Sets the action handler for the Sudoku button.
      * 
-     * @param handler
+     * @param handler sets the action handler for the Sudoku button
      */
     public void setOnSudokuSelected(final Runnable handler) {
         this.btnSudoku.setOnAction(e -> handler.run());
     }
 
     /**
-     * Sets the action handler for the Leader button
+     * Sets the action handler for the Leader button.
      * 
-     * @param handler
+     * @param handler sets the action handler for the Leader button
      */
     public void setOnLeaderboardSelected(final Runnable handler) {
         this.btnLeaderboard.setOnAction(e -> handler.run());

@@ -1,5 +1,9 @@
 package it.unibo.gridgames.view;
 
+/** 
+ * UIConstants defines constants used for UI layout and styling.
+ */
+
 public enum UIConstants {
     MARGIN_TOP(30),
     MARGIN_BOTTOM(20),
@@ -8,10 +12,15 @@ public enum UIConstants {
 
     private final int value;
 
-    UIConstants(int value) {
+    UIConstants(final int value) {
         this.value = value;
     }
 
+    /**
+     * Returns the integer value associated with the UI constant.
+     * 
+     * @return value 
+     */
     public int getValue() {
         return value;
     }

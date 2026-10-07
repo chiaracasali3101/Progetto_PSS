@@ -14,25 +14,42 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * Unit tests for the ScoreManager class.
+ * ScoreManagerTest
+ */
 public class ScoreManagerTest {
 
     @TempDir
-    Path tempDir;
+    private Path tempDir;
 
     private ScoreManager scoreManager;
 
+    /**
+     * Setup method to initialize the ScoreManager instance before each test.
+     */
     @BeforeEach
     public void setUp() {
         final Path tempFile = tempDir.resolve("scores_test.csv");
         this.scoreManager = new ScoreManagerImpl(tempFile.toString());
     }
 
+    /**
+     * Test for the loadAllScores method of ScoreManager when the file does not exist.
+     * 
+     * @throws IOException
+     */
     @Test
     public void testLoadScoresWhenFileDoesNotExist() throws IOException {
         final List<GameRecordImpl> scores = this.scoreManager.loadAllScores();
         assertTrue(scores.isEmpty(), "La lista deve essere vuota se il file non esiste");
     }
 
+    /**
+     * Test for the getNumberOfGamesPlayed method of ScoreManager.
+     * 
+     * @throws IOException
+     */
     @Test
     public void testGetNumberOfGamesPlayed() throws IOException {
         final LocalDateTime now = LocalDateTime.now().withNano(0);
@@ -52,6 +69,11 @@ public class ScoreManagerTest {
         assertEquals(1, this.scoreManager.getNumberOfGamesPlayed(GameType.PUZZLE_15));
     }
 
+    /**
+     * Test for the getTopScores method of ScoreManager.
+     * 
+     * @throws IOException
+     */
     @Test
     public void getTopScore() throws IOException {
         final LocalDateTime now = LocalDateTime.now().withNano(0);
@@ -68,6 +90,11 @@ public class ScoreManagerTest {
         assertEquals(300, topScores.get(0).getScore(), "Il punteggio più alto dovrebbe essere 300");
     }
 
+    /**
+     * Test for the getHighestScore method of ScoreManager.
+     * 
+     * @throws IOException
+     */
     @Test
     public void testGetHighestScore() throws IOException {
         final LocalDateTime now = LocalDateTime.now().withNano(0);

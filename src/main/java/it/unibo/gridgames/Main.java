@@ -1,7 +1,7 @@
 package it.unibo.gridgames;
 
 /**
- * Main
+ * Main class to start the application.
  */
 public final class Main {
     /**
