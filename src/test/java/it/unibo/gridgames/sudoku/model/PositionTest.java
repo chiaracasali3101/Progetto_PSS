@@ -7,12 +7,16 @@ import org.junit.jupiter.api.Test;
 
 class PositionTest {
 
+    private static final int VALID_ROW = 2;
+    private static final int VALID_COLUMN = 5;
+    private static final int OUT_OF_BOUNDS = 9;
+
     @Test
     void validPositionKeepsRowAndColumn() {
-        Position position = new Position(2, 5);
+        final Position position = new Position(VALID_ROW, VALID_COLUMN);
 
-        assertEquals(2, position.getRow());
-        assertEquals(5, position.getColumn());
+        assertEquals(VALID_ROW, position.getRow());
+        assertEquals(VALID_COLUMN, position.getColumn());
     }
 
     @Test
@@ -25,13 +29,13 @@ class PositionTest {
         assertThrows(IllegalArgumentException.class, () -> new Position(0, -1));
     }
 
-        @Test
+    @Test
     void rowTooLargeIsRejected() {
-        assertThrows(IllegalArgumentException.class, () -> new Position(9, 0));
+        assertThrows(IllegalArgumentException.class, () -> new Position(OUT_OF_BOUNDS, 0));
     }
 
     @Test
     void columnTooLargeIsRejected() {
-        assertThrows(IllegalArgumentException.class, () -> new Position(0, 9));
+        assertThrows(IllegalArgumentException.class, () -> new Position(0, OUT_OF_BOUNDS));
     }
 }
