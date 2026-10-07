@@ -8,9 +8,6 @@ import javafx.stage.Stage;
 
 /**
  * The main application class for the GridGames project.
- * It extends the JavaFX Application class and serves as the entry point for the
- * application.
- * MainApp
  */
 public final class MainApp extends Application {
 
@@ -19,6 +16,9 @@ public final class MainApp extends Application {
      */
     @Override
     public void start(final Stage stage) {
+        /**
+         * Button handlers are set up to print messages to the console when the corresponding buttons are clicked. 
+         */
         final MainAppView view = new MainAppView();
         final Scene scene = new Scene(view, 500, 400);
         view.setOn2048Selected(() -> System.out.println("Avvio 2048... (Jacopo)"));

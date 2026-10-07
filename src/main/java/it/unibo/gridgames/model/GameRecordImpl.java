@@ -6,7 +6,7 @@ import java.util.Objects;
 //classe 
 
 /**
- * Represents an immutable record of a completed game session, tracking player performance metrics, game type, and completion time.
+ * Represents an immutable record of a completed game session.
  */
 
 public class GameRecordImpl {
@@ -54,7 +54,9 @@ public class GameRecordImpl {
     // metodi getter pubblici per accedere ai campi privati della classe
     // nome giocatore
     /**
-     * {@inheritDoc}
+     * Returns the name of the player who played the game.
+     * 
+     * @return the name of the player who played the game
      */
     public final String getPlayerName() {
         return this.playerName;
@@ -62,7 +64,9 @@ public class GameRecordImpl {
 
     // gioco
     /**
-     * {@inheritDoc}
+     * Returns the type of game that was played.
+     * 
+     * @return the type of game that was played
      */
     public final GameType getGameType() {
         return this.gameType;
@@ -70,7 +74,9 @@ public class GameRecordImpl {
 
     // punteggio
     /**
-     * {@inheritDoc}
+     * Returns the score achieved by the player in the game.
+     * 
+     * @return the score achieved by the player in the game
      */
     public final int getScore() {
         return this.score;
@@ -78,7 +84,9 @@ public class GameRecordImpl {
 
     // mosse
     /**
-     * {@inheritDoc}
+     * Returns the number of moves made by the player in the game.
+     * 
+     * @return the number of moves made by the player in the game
      */
     public final int getMoves() {
         return this.moves;
@@ -86,7 +94,9 @@ public class GameRecordImpl {
 
     // tempo
     /**
-     * {@inheritDoc}
+     * Returns the duration of the game in seconds.
+     * 
+     * @return the duration of the game in seconds
      */
     public final long getDurationSeconds() {
         return this.durationSeconds;
@@ -94,7 +104,9 @@ public class GameRecordImpl {
 
     // quando è stata giocata la partita
     /**
-     * {@inheritDoc}
+     * Returns the timestamp of when the game was played.
+     * 
+     * @return the timestamp of when the game was played
      */
     public final LocalDateTime getTimestamp() {
         return this.timestamp;

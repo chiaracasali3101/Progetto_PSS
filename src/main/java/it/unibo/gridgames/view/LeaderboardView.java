@@ -18,15 +18,15 @@ public class LeaderboardView extends BorderPane {
         this.setStyle("-fx-background-color: #f7f9fa;");
 
         this.setTop(this.btnBack);
-        BorderPane.setMargin(this.btnBack, new Insets(15));
+        BorderPane.setMargin(this.btnBack, new Insets(UIConstants.BUTTON_BACK.getValue()));
 
         btnBack.setStyle("-fx-background-color: darkorange; -fx-text-fill: white; -fx-font-weight: bold;");
     }
 
     /**
-     * Sets the action handler for the back button
+     * Sets the action handler for the back button.
      * 
-     * @param handler
+     * @param handler the Runnable to execute when the back button is clicked
      */
     public void setOnBackSelected(final Runnable handler) {
         this.btnBack.setOnAction(e -> handler.run());

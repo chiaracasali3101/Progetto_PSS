@@ -2,6 +2,8 @@ package it.unibo.gridgames.persistence;
 
 import it.unibo.gridgames.model.GameRecordImpl;
 import it.unibo.gridgames.model.GameType;
+import it.unibo.gridgames.view.UIConstants;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -20,6 +22,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class ScoreManagerTest {
 
+    private static final String ALICE = "Alice";
+    private static final String BOB = "Bob";
+    private static final String CHARLIE = "Charlie";
+
     @TempDir
     private Path tempDir;
 
@@ -37,7 +43,7 @@ public class ScoreManagerTest {
     /**
      * Test for the loadAllScores method of ScoreManager when the file does not exist.
      * 
-     * @throws IOException
+     * @throws IOException issued if there is an error reading or writing the score file.
      */
     @Test
     public void testLoadScoresWhenFileDoesNotExist() throws IOException {
@@ -48,14 +54,14 @@ public class ScoreManagerTest {
     /**
      * Test for the getNumberOfGamesPlayed method of ScoreManager.
      * 
-     * @throws IOException
+     * @throws IOException issued if there is an error reading or writing the score file.
      */
     @Test
     public void testGetNumberOfGamesPlayed() throws IOException {
         final LocalDateTime now = LocalDateTime.now().withNano(0);
-        final GameRecordImpl record1 = new GameRecordImpl("Alice", 100, GameType.GAME_2048, 10, 60L, now);
-        final GameRecordImpl record2 = new GameRecordImpl("Bob", 200, GameType.SUDOKU, 20, 120L, now);
-        final GameRecordImpl record3 = new GameRecordImpl("Charlie", 300, GameType.PUZZLE_15, 0, 180L, now);
+        final GameRecordImpl record1 = new GameRecordImpl(ALICE, 100, GameType.GAME_2048, 10, 60L, now);
+        final GameRecordImpl record2 = new GameRecordImpl(BOB, 200, GameType.SUDOKU, 20, 120L, now);
+        final GameRecordImpl record3 = new GameRecordImpl(CHARLIE, 300, GameType.PUZZLE_15, 0, 180L, now);
 
         this.scoreManager.saveScore(record1);
         this.scoreManager.saveScore(record2);
@@ -72,37 +78,38 @@ public class ScoreManagerTest {
     /**
      * Test for the getTopScores method of ScoreManager.
      * 
-     * @throws IOException
+     * @throws IOException issued if there is an error reading or writing the score file.
      */
     @Test
     public void getTopScore() throws IOException {
         final LocalDateTime now = LocalDateTime.now().withNano(0);
-        final GameRecordImpl record1 = new GameRecordImpl("Alice", 100, GameType.GAME_2048, 10, 60L, now);
-        final GameRecordImpl record2 = new GameRecordImpl("Bob", 200, GameType.GAME_2048, 20, 120L, now);
-        final GameRecordImpl record3 = new GameRecordImpl("Charlie", 300, GameType.GAME_2048, 30, 180L, now);
+        final GameRecordImpl record1 = new GameRecordImpl(ALICE, 100, GameType.GAME_2048, 10, 60L, now);
+        final GameRecordImpl record2 = new GameRecordImpl(BOB, 200, GameType.SUDOKU, 20, 120L, now);
+        final GameRecordImpl record3 = new GameRecordImpl(CHARLIE, 300, GameType.PUZZLE_15, 30, 180L, now);
 
         this.scoreManager.saveScore(record1);
         this.scoreManager.saveScore(record2);
         this.scoreManager.saveScore(record3);
 
         final List<GameRecordImpl> topScores = this.scoreManager.getTopScores(GameType.GAME_2048, 1);
-        assertEquals(1, topScores.size(), "Dovrebbe esserci un solo record nella classifica");
-        assertEquals(300, topScores.get(0).getScore(), "Il punteggio più alto dovrebbe essere 300");
+        assertEquals(UIConstants.MAX_SCORE, topScores.size(), "Dovrebbe esserci un solo record nella classifica");
+        assertEquals(UIConstants.RECORDS_LIMIT, topScores.get(0).getScore(), "Il punteggio più alto dovrebbe essere 300");
     }
 
     /**
      * Test for the getHighestScore method of ScoreManager.
      * 
-     * @throws IOException
+     * @throws IOException issued if there is an error reading or writing the score file.
      */
     @Test
     public void testGetHighestScore() throws IOException {
         final LocalDateTime now = LocalDateTime.now().withNano(0);
-        this.scoreManager.saveScore(new GameRecordImpl("Alice", 100, GameType.GAME_2048, 10, 60L, now));
-        this.scoreManager.saveScore(new GameRecordImpl("Bob", 300, GameType.GAME_2048, 20, 120L, now));
+        this.scoreManager.saveScore(new GameRecordImpl(ALICE, 100, GameType.GAME_2048, 10, 60L, now));
+        this.scoreManager.saveScore(new GameRecordImpl(BOB, 300, GameType.SUDOKU, 20, 120L, now));
+        this.scoreManager.saveScore(new GameRecordImpl(CHARLIE, 300, GameType.PUZZLE_15, 20, 120L, now));
 
         final GameRecordImpl highest = this.scoreManager.getHighestScore(GameType.GAME_2048);
         assertEquals(300, highest.getScore());
-        assertEquals("Bob", highest.getPlayerName());
+        assertEquals("BOB", highest.getPlayerName());
     }
 }

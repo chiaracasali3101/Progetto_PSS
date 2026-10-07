@@ -6,6 +6,7 @@ import java.util.Locale;
 
 import it.unibo.gridgames.model.GameRecordImpl;
 import it.unibo.gridgames.model.GameType;
+import it.unibo.gridgames.view.UIConstants;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -48,8 +49,8 @@ public class ScoreManagerImpl implements ScoreManager {
      * @throws IOException signals that an I/O exception of some sort has occurred
      */
     @Override
-    public final void saveScore(final GameRecordImpl record) throws IOException { // implementazione per salvare il
-                                                                                  // punteggio
+    public final void saveScore(final GameRecordImpl record) throws IOException { // implementazione per salvare il punteggio nel file
+                                                                                
         synchronized (this) {
 
             // controllo valori nulli
@@ -76,6 +77,7 @@ public class ScoreManagerImpl implements ScoreManager {
         }
     }
 
+    //mostra i punteggi salvati nel file, se il file non esiste ritorna una lista vuota
     @Override
     public final List<GameRecordImpl> loadAllScores() {
         if (!Files.exists(this.filePath)) {
@@ -92,7 +94,7 @@ public class ScoreManagerImpl implements ScoreManager {
                 }
 
                 final String[] tokens = line.split(",");
-                if (tokens.length >= 6) {
+                if (tokens.length >= UIConstants.EXPECTED_FIELDS_COUNT.getValue()) {
                     final String playerName = tokens[0].trim();
                     final int score = Integer.parseInt(tokens[1].trim());
                     final GameType gameType = GameType.valueOf(tokens[2].trim().toUpperCase(Locale.ROOT));
