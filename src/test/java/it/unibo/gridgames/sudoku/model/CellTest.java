@@ -28,7 +28,7 @@ class CellTest {
 
         assertTrue(cell.isEmpty());
     }
-∏
+
     @Test
     void cellRemembersIfItIsFixed() {
         assertTrue(new Cell(VALID_VALUE, true).isFixed());
