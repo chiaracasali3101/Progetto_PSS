@@ -4,38 +4,41 @@ import it.unibo.gridgames.view.LeaderboardView;
 import it.unibo.gridgames.view.MainAppView;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-public class MainApp extends Application {
+/**
+ * The main application class for the GridGames project.
+ */
+public final class MainApp extends Application {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void start(final Stage stage) {
-        /*final Label label = new Label("JavaFX è configurato correttamente!");
-        final Scene scene = new Scene(new StackPane(label), 400, 200);
-        stage.setTitle("Grid Games - Check JavaFX");
-        stage.setScene(scene);
-        stage.show();
-        */
-       final MainAppView view = new MainAppView();
+        /**
+         * Button handlers are set up to print messages to the console when the corresponding buttons are clicked. 
+         */
+        final MainAppView view = new MainAppView();
         final Scene scene = new Scene(view, 500, 400);
         view.setOn2048Selected(() -> System.out.println("Avvio 2048... (Jacopo)"));
         view.setOnSudokuSelected(() -> System.out.println("Avvio Sudoku... (Audray)"));
-        view.setOnGiocoDel1Selected(() -> System.out.println("Avvio Gioco del 15... (Martina)"));
-        view.setOnLeaderboardSelected(() -> {System.out.println("Apertura Classifics & Statistiche (Chiara)");});
+        view.setOnGiocoDel15Selected(() -> System.out.println("Avvio Gioco del 15... (Martina)"));
+        view.setOnLeaderboardSelected(() -> {
+            System.out.println("Apertura Classifics & Statistiche (Chiara)");
+        });
 
         stage.setTitle("GridGames");
         stage.setScene(scene);
         stage.show();
 
         view.setOnLeaderboardSelected(() -> {
-        final LeaderboardView leaderboardView = new LeaderboardView();
-        leaderboardView.setOnBackSelected(() -> scene.setRoot(view));
+            final LeaderboardView leaderboardView = new LeaderboardView();
+            leaderboardView.setOnBackSelected(() -> scene.setRoot(view));
 
-    //mostra la classifica
-    scene.setRoot(leaderboardView);
-});
+            // mostra la classifica
+            scene.setRoot(leaderboardView);
+        });
     }
 
     /**

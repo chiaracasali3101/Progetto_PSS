@@ -1,80 +1,53 @@
 package it.unibo.gridgames.model;
+
+//interfaccia 
+
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 /**
- * 
- * Represents an immutable record of a completed game session, tracking player performance metrics, game type, and completion time.
+ * Represents a record of a game played by a player.
+ * GameRecord.
  */
-
-public class GameRecord {
-    private final String playerName;
-    private final int score;
-    private final GameType gameType;
-    private final int moves;
-    private final long durationSeconds;
-    private final java.time.LocalDateTime timestamp;
+public interface GameRecord {
+    /**
+     * Returns the name of the player associated with this game record.
+     * 
+     * @return player's name
+     */
+    String getPlayerName();
 
     /**
-     * Constructs a new {@code GameRecord} instance.
-    * @param playerName the name of the player
-    * @param score the score achieved by the player
-    * @param gameType the type of the game played
-    * @param moves the number of moves made by the player
-    * @param durationSeconds the duration of the game in seconds
-    * @param timestamp the timestamp of when the game was played
-    * @throws IllegalArgumentException if playerName is null or blank, or if score, moves, or durationSeconds are negative
-    * @throws NullPointerException if gameType or timestamp is null
+     * Returns the score achieved by the player in this game record.
+     * 
+     * @return score achieved by the player
      */
+    int getScore();
 
-    //costruttore per il record di gioco
-    public GameRecord( final String playerName, final int score, final GameType gameType, final int moves, final long durationSeconds, final LocalDateTime timestamp) {
-        if (playerName == null || playerName.isBlank()) {
-            throw new IllegalArgumentException("Player name cannot be null or blank");
-        }
-        if (playerName.contains(",")) {
-            throw new IllegalArgumentException("Player name cannot contain commas");
-        }
-        if (score < 0 || moves < 0 || durationSeconds < 0) {
-            throw new IllegalArgumentException("Metrics cannot be negative");
-        }
-        
-        this.playerName= playerName;
-        this.score= score;
-        this.gameType = Objects.requireNonNull(gameType, "GameType cannot be null");
-        this.timestamp = Objects.requireNonNull(timestamp, "Timestamp cannot be null");
-        this.moves = moves;
-        this.durationSeconds = durationSeconds;
-    }
+    /**
+     * Returns the type of game associated with this game record.
+     * 
+     * @return game type (e.g., 2048, Sudoku, 15Game)
+     */
+    GameType getGameType();
 
-    // metodi getter pubblici per accedere ai campi privati della classe
-    //nome giocatore
-    public String getPlayerName() { 
-        return this.playerName; 
-    }
+    /**
+     * Returns the number of moves made by the player in this game record.
+     * 
+     * @return number of moves made by the player
+     */
+    int getMoves();
 
-    //gioco
-    public GameType getGameType() { 
-        return this.gameType; 
-    }
+    /**
+     * Returns the duration of the game in seconds for this game record.
+     * 
+     * @return duration of the game in seconds
+     */
+    long getDurationSeconds();
 
-    //punteggio
-    public int getScore() { 
-        return this.score; 
-    }
-
-    //mosse
-    public int getMoves() { 
-        return this.moves; 
-    }
-
-    //tempo
-    public long getDurationSeconds() { 
-        return this.durationSeconds; 
-    }
-
-    //quando è stata giocata la partita
-    public LocalDateTime getTimestamp() { 
-        return this.timestamp; 
-    }
+    /**
+     * Returns the timestamp indicating when this game record was created or recorded.
+     * 
+     * @return timestamp of the game record
+     */
+    LocalDateTime getTimestamp();
 }
