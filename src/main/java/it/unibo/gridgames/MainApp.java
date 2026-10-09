@@ -12,13 +12,10 @@ import javafx.stage.Stage;
 public final class MainApp extends Application {
 
     /**
-     * {@inheritDoc}
+     * Button handlers are set up to print messages to the console when the corresponding buttons are clicked. 
      */
     @Override
     public void start(final Stage stage) {
-        /**
-         * Button handlers are set up to print messages to the console when the corresponding buttons are clicked. 
-         */
         final MainAppView view = new MainAppView();
         final Scene scene = new Scene(view, 500, 400);
         view.setOn2048Selected(() -> System.out.println("Avvio 2048... (Jacopo)"));

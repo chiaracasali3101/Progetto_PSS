@@ -23,9 +23,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class ScoreManagerTest {
 
-    private static final String ALICE = "Alice";
-    private static final String BOB = "Bob";
-    private static final String CHARLIE = "Charlie";
+    private static final String P1 = "Alice";
+    private static final String P2 = "Bob";
+    private static final String P3 = "Charlie";
+
+    private static final long DURATION_60 = 60L;
+    private static final long DURATION_120 = 120L;
+    private static final long DURATION_180 = 180L;
 
     @TempDir
     private Path tempDir;
@@ -60,9 +64,9 @@ public class ScoreManagerTest {
     @Test
     public void testGetNumberOfGamesPlayed() throws IOException {
         final LocalDateTime now = LocalDateTime.now().withNano(0);
-        final GameRecordImpl record1 = new GameRecordImpl(ALICE, 100, GameType.GAME_2048, 10, 60L, now);
-        final GameRecordImpl record2 = new GameRecordImpl(BOB, 200, GameType.SUDOKU, 20, 120L, now);
-        final GameRecordImpl record3 = new GameRecordImpl(CHARLIE, 300, GameType.PUZZLE_15, 0, 180L, now);
+        final GameRecordImpl record1 = new GameRecordImpl(P1, 100, GameType.GAME_2048, 10, DURATION_60, now);
+        final GameRecordImpl record2 = new GameRecordImpl(P2, 200, GameType.SUDOKU, 20, DURATION_120, now);
+        final GameRecordImpl record3 = new GameRecordImpl(P3, 300, GameType.PUZZLE_15, 0, DURATION_180, now);
 
         this.scoreManager.saveScore(record1);
         this.scoreManager.saveScore(record2);
@@ -84,9 +88,9 @@ public class ScoreManagerTest {
     @Test
     public void getTopScore() throws IOException {
         final LocalDateTime now = LocalDateTime.now().withNano(0);
-        final GameRecordImpl record1 = new GameRecordImpl(ALICE, 100, GameType.GAME_2048, 10, 60L, now);
-        final GameRecordImpl record2 = new GameRecordImpl(BOB, 200, GameType.SUDOKU, 20, 120L, now);
-        final GameRecordImpl record3 = new GameRecordImpl(CHARLIE, 300, GameType.PUZZLE_15, 30, 180L, now);
+        final GameRecordImpl record1 = new GameRecordImpl(P1, 100, GameType.GAME_2048, 10, DURATION_60, now);
+        final GameRecordImpl record2 = new GameRecordImpl(P2, 200, GameType.SUDOKU, 20, DURATION_120, now);
+        final GameRecordImpl record3 = new GameRecordImpl(P3, 300, GameType.PUZZLE_15, 30, DURATION_180, now);
 
         this.scoreManager.saveScore(record1);
         this.scoreManager.saveScore(record2);
@@ -95,7 +99,7 @@ public class ScoreManagerTest {
         final List<GameRecordImpl> topScores = this.scoreManager.getTopScores(GameType.GAME_2048, 1);
  
         assertEquals(1, topScores.size(), "Dovrebbe esserci un solo record nella classifica");
-    
+
         assertEquals(100, topScores.get(0).getScore(), "Il punteggio dovrebbe essere 100");
     }
 
@@ -107,13 +111,23 @@ public class ScoreManagerTest {
     @Test
     public void testGetHighestScore() throws IOException {
     final LocalDateTime now = LocalDateTime.now().withNano(0);
-    this.scoreManager.saveScore(new GameRecordImpl(ALICE, 100, GameType.GAME_2048, 10, 60L, now));
-    this.scoreManager.saveScore(new GameRecordImpl(BOB, 300, GameType.GAME_2048, 20, 120L, now)); // BOB su GAME_2048
-    this.scoreManager.saveScore(new GameRecordImpl(CHARLIE, 200, GameType.PUZZLE_15, 20, 120L, now));
+    this.scoreManager.saveScore(new GameRecordImpl(
+        P1,  UIConstants.SCORE_100.getValue(), GameType.GAME_2048, 10, DURATION_60, now));
+    this.scoreManager.saveScore(new GameRecordImpl(P2, 
+        UIConstants.SCORE_300.getValue(), 
+        GameType.GAME_2048, 
+        UIConstants.SCORE_20.getValue(), 
+        DURATION_120, now)); // BOB su GAME_2048
+    this.scoreManager.saveScore(new GameRecordImpl(
+        P3, 
+        UIConstants.SCORE_200.getValue(), 
+        GameType.PUZZLE_15, 
+        UIConstants.SCORE_20.getValue(), 
+        DURATION_180, now));
 
     final GameRecordImpl highest = this.scoreManager.getHighestScore(GameType.GAME_2048);
     assertNotNull(highest, "Il punteggio più alto non dovrebbe essere null");
-    assertEquals(300, highest.getScore());
-    assertEquals(BOB, highest.getPlayerName());
+    assertEquals(UIConstants.SCORE_300, highest.getScore());
+    assertEquals(P2, highest.getPlayerName());
 }
 }

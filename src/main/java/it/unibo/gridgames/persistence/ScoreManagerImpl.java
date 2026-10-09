@@ -27,6 +27,8 @@ import java.util.stream.Collectors;
  */
 
 public class ScoreManagerImpl implements ScoreManager {
+    private static final String GAMETYPE_NO_NULL = "GameType cannot be null";
+
     private final Path filePath;
 
     /**
@@ -35,7 +37,7 @@ public class ScoreManagerImpl implements ScoreManager {
      * @param filePath the path to the file where scores will be saved and loaded
      * @throws NullPointerException if {@code filePath} is null
      */
-    public ScoreManagerImpl(String filePath) { // riceve dall'esterno il percorso del file
+    public ScoreManagerImpl(final String filePath) { // riceve dall'esterno il percorso del file
         this.filePath = Path.of(filePath);
     }
 
@@ -49,8 +51,7 @@ public class ScoreManagerImpl implements ScoreManager {
      * @throws IOException signals that an I/O exception of some sort has occurred
      */
     @Override
-    public final void saveScore(final GameRecordImpl record) throws IOException { // implementazione per salvare il punteggio nel file
-                                                                                
+    public final void saveScore(final GameRecordImpl record) throws IOException { // salvare il punteggio nel file
         synchronized (this) {
 
             // controllo valori nulli
@@ -77,7 +78,8 @@ public class ScoreManagerImpl implements ScoreManager {
         }
     }
 
-    //mostra i punteggi salvati nel file, se il file non esiste ritorna una lista vuota
+    // mostra i punteggi salvati nel file, se il file non esiste ritorna una lista
+    // vuota
     @Override
     public final List<GameRecordImpl> loadAllScores() {
         if (!Files.exists(this.filePath)) {
@@ -100,7 +102,7 @@ public class ScoreManagerImpl implements ScoreManager {
                     final GameType gameType = GameType.valueOf(tokens[2].trim().toUpperCase(Locale.ROOT));
                     final int moves = Integer.parseInt(tokens[3].trim());
                     final long durationSeconds = Long.parseLong(tokens[4].trim());
-                    final LocalDateTime timestamp = LocalDateTime.parse(tokens[5].trim());
+                    final LocalDateTime timestamp = LocalDateTime.parse(tokens[UIConstants.TIMESTAMP_INDEX.getValue()].trim());
                     final GameRecordImpl record = new GameRecordImpl(playerName, score, gameType, moves,
                             durationSeconds, timestamp);
                     records.add(record);
@@ -114,7 +116,7 @@ public class ScoreManagerImpl implements ScoreManager {
 
     @Override
     public final List<GameRecordImpl> getTopScores(final GameType gameType, final int limit) {
-        Objects.requireNonNull(gameType, "GameType cannot be null");
+        Objects.requireNonNull(gameType, GAMETYPE_NO_NULL);
 
         if (limit <= 0) {
             throw new IllegalArgumentException("Limit must be positive");
@@ -128,7 +130,7 @@ public class ScoreManagerImpl implements ScoreManager {
 
     @Override
     public final int getNumberOfGamesPlayed(final GameType gameType) {
-        Objects.requireNonNull(gameType, "GameType cannot be null");
+        Objects.requireNonNull(gameType, GAMETYPE_NO_NULL);
         return (int) loadAllScores().stream()
                 .filter(record -> record.getGameType() == gameType)
                 .count();
@@ -136,7 +138,7 @@ public class ScoreManagerImpl implements ScoreManager {
 
     @Override
     public final double getAverageScore(final GameType gameType) {
-        Objects.requireNonNull(gameType, "GameType cannot be null");
+        Objects.requireNonNull(gameType, GAMETYPE_NO_NULL);
         return loadAllScores().stream()
                 .filter(record -> record.getGameType() == gameType)
                 .mapToInt(GameRecordImpl::getScore)
@@ -146,7 +148,7 @@ public class ScoreManagerImpl implements ScoreManager {
 
     @Override
     public final GameRecordImpl getHighestScore(final GameType gameType) {
-        Objects.requireNonNull(gameType, "GameType cannot be null");
+        Objects.requireNonNull(gameType, GAMETYPE_NO_NULL);
         return loadAllScores().stream()
                 .filter(record -> record.getGameType() == gameType)
                 .max(Comparator.comparingInt(GameRecordImpl::getScore))
